@@ -1,9 +1,9 @@
 env:
-    credentials: "ENCRYPTED[!1c392fcccf471650aadf41d6b27a49759479dfb70e2d92579d1e60a8d87afc61e4c68aca586048c5395bad34e0ba58ca!]"
-    rcloneconfig: "ENCRYPTED[!a12d83a216a5d5a554e64f3b93a22c440193d8d127185bdef677424471d9c969f2ab5a2c0b3025b14c5a4b844cce6ee7!]"
-    tokentl: "ENCRYPTED[!6a183e43e28acc82ad4c79f5c7d333bf539c71534a61e230cd58ec57e5a1f88243de7e0b72243087f2e3f8749554bfc0!]"
-    idtl: "ENCRYPTED[!c0d3387a2a7bc56c9214bcf68aeb415780ccc7dd4e426aad728d89d4918c09d715a707afa2d84f14a0ce2d799c81965b!]"
-    lunch: lunch qassa_ysl-userdebug
+    credentials: "ENCRYPTED[!6ca58065aad12be117638eadda9c2a0385913f13ddf6f1ebe43f71d0baa650efc1e9100997ff5510fd3cc4ba9bac1987!]"
+    rcloneconfig: "ENCRYPTED[!2635fbe9563c3717f22c13c0d7cb66d89328f3512ec67a9fd7e11906b81551560f9a7dfa81c699a1a42a02577555cfcb!]"
+    tokentl: "ENCRYPTED[!518d1d99e3c82475e9308fee7ef1e455d43d16b19bddda930e935cde0712a29946a43a14af66b2b2e5d4a86400eda2b6!]"
+    idtl: "ENCRYPTED[!aa4f89f33fc74d58713def6da34b48e67559084a0033dcf9d0ecdeddae924ae1b5c906723f335f46868d7beb04c9fd8a!]"
+    lunch: lunch qassa_beryllium-user
     make: make qassa
 
 task:
@@ -18,12 +18,12 @@ task:
        - export DEBIAN_FRONTEND=noninteractive
        - mkdir -p ~/.config/rclone
        - echo "$rcloneconfig" > ~/.rclone.conf
-       - git config --global user.name "Rahmad Adi Pratama"
-       - git config --global user.email "OhMyVenyx@proton.me"
+       - git config --global user.name "ghou8s-ci"
+       - git config --global user.email "ghou8s-ci@gmail.com"
        - echo "$credentials" > ~/.git-credentials
        - git config --global credential.helper store --file=~/.git-credentials
        - mkdir -p ~/ccache
-       - rclone copy venyx:qassa/ccache.tar.gz ~/ -P
+       - rclone copy ghou8s-ci:qassa/ccache.tar.gz ~/ -P
        - cd ~/
        - time tar xf ccache.tar.gz
        - cd ~/
@@ -41,7 +41,7 @@ task:
       - sudo curl --create-dirs -L -o /usr/local/bin/repoo -O -L https://storage.googleapis.com/git-repo-downloads/repo
       - sudo chmod a+rx /usr/local/bin/repoo
       - repoo init -q --no-repo-verify --depth=1 -u https://github.com/keepQASSA/manifest.git -b Q -g default,-mips,-darwin,-notdefault
-      - git clone --depth 1 https://github.com/IDN-Labs/local_manifest.git -b qassa .repo/local_manifests
+      - git clone --depth 1 https://github.com/ghou8s/local_manifest.git -b qassa .repo/local_manifests
       - rm -rf .repo/repo && git clone https://gerrit.googlesource.com/git-repo .repo/repo
       - sed -i 's|ssh://git@github.com|https://github.com|g' .repo/manifests/snippets/qassa.xml
 #      - repoo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j8 --fail-fast
@@ -50,16 +50,16 @@ task:
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Sync Completed!"
 
   Build_script:
-      - export BUILD_USERNAME="venyx"
-      - export BUILD_HOSTNAME="IDN-Labs"
-      - export KBUILD_BUILD_USER="OhMyVenyx"
-      - export KBUILD_BUILD_HOST="IDN-Labs"
-      - export WITH_GAPPS=true
+      - export BUILD_USERNAME="ghou8s"
+      - export BUILD_HOSTNAME="ghou8s-ci"
+      - export KBUILD_BUILD_USER="ghou8s"
+      - export KBUILD_BUILD_HOST="ghou8s-ci"
+#      - export WITH_GAPPS=true
       - sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build Started!"
-#      - ./collect.sh
-      - ./final.sh
-      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build $(cd ~/rom/out/target/product/ysl/ && ls qassa-*.zip) Completed!"
+      - ./collect.sh
+#      - ./final.sh
+      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build $(cd ~/rom/out/target/product/beryllium/ && ls qassa-*.zip) Completed!"
 
   Upload_script:
       - ./upload.sh
@@ -67,6 +67,6 @@ task:
       - ./ziping.sh
       - cd ~/
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Uploading ccache...."
-      - rclone copy ccache.tar.gz venyx:qassa -P
+      - rclone copy ccache.tar.gz ghou8s-ci:qassa -P
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Ccache Uploaded Successfully!"
 
