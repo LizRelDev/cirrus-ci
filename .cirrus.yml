@@ -1,9 +1,9 @@
 env:
-    credentials: "ENCRYPTED[!6ca58065aad12be117638eadda9c2a0385913f13ddf6f1ebe43f71d0baa650efc1e9100997ff5510fd3cc4ba9bac1987!]"
-    rcloneconfig: "ENCRYPTED[!2635fbe9563c3717f22c13c0d7cb66d89328f3512ec67a9fd7e11906b81551560f9a7dfa81c699a1a42a02577555cfcb!]"
-    tokentl: "ENCRYPTED[!518d1d99e3c82475e9308fee7ef1e455d43d16b19bddda930e935cde0712a29946a43a14af66b2b2e5d4a86400eda2b6!]"
-    idtl: "ENCRYPTED[!aa4f89f33fc74d58713def6da34b48e67559084a0033dcf9d0ecdeddae924ae1b5c906723f335f46868d7beb04c9fd8a!]"
-    lunch: lunch qassa_beryllium-user
+    credentials: "ENCRYPTED[!20a1773a6e495a82ede64529b25fd486435b42ea926b9b7e363f19f7b6a6d146e269a2c434b3c317ac958cb9726ecf06!]"
+    rcloneconfig: "ENCRYPTED[!2d3be29b89b2b1c9819222d8949896f49fd5a6ae8f0cfbbb4915fcb6b9bf6e978f928fbe16f5be39c63b8101499826f5!]"
+    tokentl: "ENCRYPTED[!d06b3fffe297e7a7b65042df30ce648e823b94304844573c1bfb1458cc0026e53ef527757a0953929e012fd4bb88aa6c!]"
+    idtl: "ENCRYPTED[!78e64b47ad052d14c486fb646c77c3b6d1746c4c462437d449430f1d54fc5d87d46112569d9a0e48d279a2c3ac6670ea!]"
+    lunch: lunch qassa_onclite-user
     make: make qassa
 
 task:
@@ -18,12 +18,12 @@ task:
        - export DEBIAN_FRONTEND=noninteractive
        - mkdir -p ~/.config/rclone
        - echo "$rcloneconfig" > ~/.rclone.conf
-       - git config --global user.name "ghou8s-ci"
-       - git config --global user.email "ghou8s-ci@gmail.com"
+       - git config --global user.name "LizRelDev-ci"
+       - git config --global user.email "LizRelDev-ci@gmail.com"
        - echo "$credentials" > ~/.git-credentials
        - git config --global credential.helper store --file=~/.git-credentials
        - mkdir -p ~/ccache
-       - rclone copy ghou8s-ci:qassa/ccache.tar.gz ~/ -P
+       - rclone copy LizRelDev-ci:qassa/ccache.tar.gz ~/ -P
        - cd ~/
        - time tar xf ccache.tar.gz
        - cd ~/
@@ -39,7 +39,7 @@ task:
       - mkdir -p ~/rom
       - cd ~/rom
       - repo init -q --no-repo-verify --depth=1 -u https://github.com/keepQASSA/manifest.git -b Q -g default,-mips,-darwin,-notdefault
-      - git clone --depth 1 https://github.com/ghou8s/local_manifest.git -b qassa-beryllium .repo/local_manifests
+      - git clone --depth 1 https://github.com/LizRelDev/local_manifest.git -b qassa-onclite .repo/local_manifests
       - sed -i 's|ssh://git@github.com|https://github.com|g' .repo/manifests/snippets/qassa.xml
 #      - repoo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune --force-sync -j8 --fail-fast
       - repo sync -c -j8 --force-sync --no-clone-bundle --no-tags
@@ -47,16 +47,16 @@ task:
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Sync Completed!"
 
   Build_script:
-      - export BUILD_USERNAME="ghou8s-ci"
-      - export BUILD_HOSTNAME="ghou8s"
-      - export KBUILD_BUILD_USER="ghou8s-ci"
-      - export KBUILD_BUILD_HOST="ghou8s"
+      - export BUILD_USERNAME="LizRelDev-ci"
+      - export BUILD_HOSTNAME="LizRelDev"
+      - export KBUILD_BUILD_USER="LizRelDev-ci"
+      - export KBUILD_BUILD_HOST="LizRelDev"
 #      - export WITH_GAPPS=true
       - sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
-      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build qassa beryllium Started!"
+      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build qassa onclite Started!"
       - ./collect.sh
 #      - ./final.sh
-      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build $(cd ~/rom/out/target/product/beryllium/ && ls qassa_*.zip) Completed!"
+      - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build $(cd ~/rom/out/target/product/onclite/ && ls qassa_*.zip) Completed!"
 
   Upload_script:
       - ./upload.sh
