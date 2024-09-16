@@ -51,7 +51,7 @@ task:
       - export BUILD_HOSTNAME="LizRelDev"
       - export KBUILD_BUILD_USER="LizRelDev-ci"
       - export KBUILD_BUILD_HOST="LizRelDev"
-#      - export WITH_GAPPS=true
+#      - export WITH_GAPPS=false
       - sudo ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
       - curl -s https://api.telegram.org/$tokentl/sendMessage -d chat_id=$idtl -d text="Build qassa onclite Started!"
       - ./collect.sh
